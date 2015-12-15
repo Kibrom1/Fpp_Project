@@ -4,10 +4,10 @@ import java.math.*;
 public class Trial {
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/trial";
+	static final String DB_URL = "jdbc:mysql://localhost/phonedirectory";
 	// Database credentials
 	static final String USER = "root";
-	static final String PASS = "leafe1kib1";
+	static final String PASS = "leafe1";
 
 	public static void main(String[] args) {
 		Connection conn = null;
@@ -24,18 +24,20 @@ public class Trial {
 			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT name, id FROM kk";
+			sql = "SELECT name,phoneNumber,email,address FROM Contact";
 			ResultSet rs = stmt.executeQuery(sql);
 
 			// STEP 5: Extract data from result set
 			System.out.println("Name:\t Id:");
 			while (rs.next()) {
 				// Retrieve by column name
-				int id = rs.getInt("id");
 				String name = rs.getString("name");
+				String phoneNumber = rs.getString("phoneNumber");
+				String email = rs.getString("email");
+				String address = rs.getString("address");
 
 				// Display values
-				System.out.println(name + "\t" + id);
+				System.out.println(name + "\t" + phoneNumber + "\t" + email + "\t" + address );
 
 			}
 			//System.out.println();
