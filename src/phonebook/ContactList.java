@@ -16,6 +16,7 @@ import javax.swing.ListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -35,11 +36,12 @@ public class ContactList extends JFrame {
 
 	JList list;
 	JButton btnReturn;
-	JButton btnAdd;
+	JButton btnNew;
 	ListModel lstmodel;
 
-	public ContactList() {
+	public ContactList() throws FileNotFoundException {
 		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		conn = DBConnection.getConnection();
 		try {
 			setTitle("List of Contacts");
 			setBounds(100, 100, 450, 300);
@@ -58,9 +60,9 @@ public class ContactList extends JFrame {
 			btnReturn.setBounds(239, 208, 98, 32);
 			contentPane.add(btnReturn);
 
-			btnAdd = new JButton("Add New");
-			btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			btnAdd.addActionListener(new ActionListener() {
+			btnNew = new JButton("     New");
+			btnNew.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			btnNew.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					dispose();
 					EventQueue.invokeLater(new Runnable() {
@@ -75,8 +77,8 @@ public class ContactList extends JFrame {
 					});
 				}
 			});
-			btnAdd.setBounds(107, 208, 107, 32);
-			contentPane.add(btnAdd);
+			btnNew.setBounds(107, 208, 107, 32);
+			contentPane.add(btnNew);
 			populateList();// { "Kibrom", "Haile", "Sahile" };
 		} catch (Exception ex) {
 			ex.getMessage();
@@ -89,13 +91,10 @@ public class ContactList extends JFrame {
 		String[] nameList = null;
 		String phoneNumber;
 		String name;
-		
+
 		// ArrayList names = new ArrayList<>();
 		try {
 			DefaultListModel<String> model = new DefaultListModel<>();
-			// Class.forName(driver);
-			// conn = DriverManager.getConnection(url, user, password);
-			conn = DBConnection.getConnection();
 			stmt = conn.createStatement();
 			String sql;
 			sql = "SELECT name,phoneNumber,email,address FROM Contact order by name asc";
@@ -109,12 +108,12 @@ public class ContactList extends JFrame {
 			list.setToolTipText("");
 			list.setBounds(33, 11, 366, 164);
 			contentPane.add(list);
-
 			resultSet.close();
-			conn.close();
 
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
+		} finally {
+			//conn.close();
 		}
 	}
 }

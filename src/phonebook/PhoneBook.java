@@ -18,9 +18,6 @@ public class PhoneBook extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -33,6 +30,7 @@ public class PhoneBook extends JFrame {
 			}
 		});
 	}
+
 	public PhoneBook() {
 		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("My phone book");
@@ -50,8 +48,8 @@ public class PhoneBook extends JFrame {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							
-							//ContactList namelist = new ContactList();
+
+							// ContactList namelist = new ContactList();
 							// namelist2.populateList();
 							ContactList frame = new ContactList();
 							frame.setVisible(true);

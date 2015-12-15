@@ -45,16 +45,12 @@ public class DBConnection {
 
 			try {
 				DbProperty prop = new DbProperty();
+				
 				String driver = prop.getDriver();
-
 				String url = prop.getDbUrl();
-
 				String user = prop.getUser();
-
 				String password = prop.getPassword();
-
 				Class.forName(driver);
-
 				connection = (Connection) DriverManager.getConnection(url, user, password);
 
 			} catch (ClassNotFoundException e) {
