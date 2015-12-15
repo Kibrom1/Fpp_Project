@@ -104,7 +104,7 @@ public class ContactList extends JFrame {
 				model.addElement(names);
 			}
 			list = new JList<String>(model);// list.setModel(model);
-			list.setBounds(163, 67, -114, -32);
+			list.setBounds(163, 67, 250, 164);
 			list.setToolTipText("");
 			list.setBounds(33, 11, 366, 164);
 			contentPane.add(list);

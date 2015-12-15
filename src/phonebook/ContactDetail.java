@@ -110,6 +110,7 @@ public class ContactDetail extends JFrame {
 							preparedStmt.setString(1, name);
 
 							preparedStmt.execute();
+							JOptionPane.showMessageDialog(btnDelete, "Deleted successfully");
 							ContactList frame = new ContactList();
 							frame.setVisible(true);
 							// ContactList frame = new ContactList();
@@ -148,7 +149,7 @@ public class ContactDetail extends JFrame {
 							preparedStmt.setString(4, address);
 
 							preparedStmt.execute();
-
+							JOptionPane.showMessageDialog(btnSave, "Saved successfully");
 							ContactList frame = new ContactList();
 							frame.setVisible(true);
 						} catch (Exception e) {
@@ -168,17 +169,21 @@ public class ContactDetail extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					String name = txtName.getText();
-					String searchSql = "select * FROM Contact where name= \"" + name + " \"" ;
-					txtPhoneNumber.setText(searchSql);
+					String searchSql = "select * FROM Contact where name= \"" + name + " \"";
+					// txtPhoneNumber.setText(searchSql);
 					PreparedStatement preparedStmt = (PreparedStatement) conn.prepareStatement(searchSql);
-					//preparedStmt.setString(1, txtName.getText());
+					// preparedStmt.setString(1, txtName.getText());
 
 					ResultSet resultSet = preparedStmt.executeQuery(searchSql);
-					while (resultSet.next()) {
-						txtName.setText(resultSet.getString("name"));
-						txtPhoneNumber.setText(resultSet.getString("phoneNumber"));
-						txtEmail.setText(resultSet.getString("email"));
-						txtAddress.setText(resultSet.getString("address"));
+					if ((resultSet.getFetchSize()) == 0)
+						JOptionPane.showMessageDialog(btnSearch, "There is no a contact with name:" + txtName.getText());
+					else {
+						while (resultSet.next()) {
+							txtName.setText(resultSet.getString("name"));
+							txtPhoneNumber.setText(resultSet.getString("phoneNumber"));
+							txtEmail.setText(resultSet.getString("email"));
+							txtAddress.setText(resultSet.getString("address"));
+						}
 					}
 				} catch (NullPointerException e) {
 					e.printStackTrace();
@@ -189,75 +194,67 @@ public class ContactDetail extends JFrame {
 			}
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(44)
-							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-							.addGap(47)
-							.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(25)
-							.addComponent(lblPhoneNumber, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-							.addGap(26)
-							.addComponent(txtPhoneNumber, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(44)
-							.addComponent(lblEmail, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-							.addGap(74)
-							.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(44)
-							.addComponent(lblAddress, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-							.addGap(46)
-							.addComponent(txtAddress, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-							.addGap(33)
-							.addComponent(btnSearch)
-							.addGap(18)
-							.addComponent(btnReturn, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(67, Short.MAX_VALUE))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(36)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup().addGap(44)
+										.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 80,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(47).addComponent(txtName, GroupLayout.PREFERRED_SIZE, 188,
+												GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup().addGap(25)
+								.addComponent(lblPhoneNumber, GroupLayout.PREFERRED_SIZE, 120,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(26).addComponent(txtPhoneNumber, GroupLayout.PREFERRED_SIZE, 188,
+										GroupLayout.PREFERRED_SIZE))
+						.addGroup(
+								gl_contentPane.createSequentialGroup().addGap(44)
+										.addComponent(lblEmail, GroupLayout.PREFERRED_SIZE, 53,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(74).addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 188,
+												GroupLayout.PREFERRED_SIZE))
+						.addGroup(
+								gl_contentPane.createSequentialGroup().addGap(44)
+										.addComponent(lblAddress, GroupLayout.PREFERRED_SIZE, 81,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(46).addComponent(txtAddress, GroupLayout.PREFERRED_SIZE, 188,
+												GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
+										.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 89,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(10)
+										.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 89,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(33).addComponent(btnSearch).addGap(18).addComponent(btnReturn,
+												GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap(67, Short.MAX_VALUE)));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup().addGap(36)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup().addGap(4).addComponent(lblNewLabel,
+										GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
 						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(2)
-							.addComponent(lblPhoneNumber, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+				.addGap(18)
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup().addGap(2).addComponent(lblPhoneNumber,
+								GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
 						.addComponent(txtPhoneNumber, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addGap(15)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblEmail)
+				.addGap(15)
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(lblEmail)
 						.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addGap(2)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(17)
-							.addComponent(lblAddress, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+				.addGap(2)
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup().addGap(17).addComponent(lblAddress,
+								GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
 						.addComponent(txtAddress, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addGap(31)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+				.addGap(31)
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-							.addComponent(btnReturn, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(101, Short.MAX_VALUE))
-		);
+								.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+								.addComponent(btnReturn, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap(101, Short.MAX_VALUE)));
 		contentPane.setLayout(gl_contentPane);
 	}
 
